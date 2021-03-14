@@ -40,28 +40,4 @@ public class ButtonBehaviour : MonoBehaviour
         Application.Quit();
     }
 
-    public void easyLevel()
-    {
-        GameManager.Instance.gameLevel = GameLevel.EASY;
-        SceneManager.LoadScene("Game");
-        GameManager.Instance.gameSetup();
-    }
-    public void normalLevel()
-    {
-        GameManager.Instance.gameLevel = GameLevel.NORMAL;
-        SceneManager.LoadScene("Game");
-        GameManager.Instance.gameSetup();
-    }
-    public void hardLevel()
-    {
-        GameManager.Instance.gameLevel = GameLevel.HARD;
-        SceneManager.LoadScene("Game");
-        GameManager.Instance.gameSetup();
-    }
-    public void extremeLevel()
-    {
-        GameManager.Instance.gameLevel = GameLevel.EXTREME;
-        SceneManager.LoadScene("Game");
-        GameManager.Instance.gameSetup();
-    }
 }

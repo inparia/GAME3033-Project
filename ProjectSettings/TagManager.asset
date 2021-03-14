@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Shootable
+  - Platform
+  - Projectile
+  - Enemy
+  - Goal
+  - DeathPlane
   layers:
   - Default
   - TransparentFX
@@ -17,8 +22,8 @@ TagManager:
   - Lighting
   - Ground
   - Postprocessing
-  - 
-  - 
+  - Enemy
+  - Player
   - 
   - 
   - 
