@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+
+
 public class Player : MonoBehaviour
 {
 
@@ -13,7 +15,7 @@ public class Player : MonoBehaviour
 
     [Header("Player Movement Stats")]
     private float walkMovement;
-    public int playerLife = 5;
+    public int playerLife;
     public float speed = 100;
     private bool groundedPlayer;
     private float jumpHeight = .35f;
@@ -22,12 +24,26 @@ public class Player : MonoBehaviour
 
     [Header("Text")]
     public Text resumeText;
-
+    public Button saveButton, exitButton;
     [Header("Spawn Point")]
-    public Transform spawnPoint;
+    public Transform spawnPoint, spawnPointTwo;
+    public Transform mainSpawnPoint;
     // Start is called before the first frame update
     void Start()
     {
+        switch(GameManager.Instance.gameLevel)
+        {
+            case GameLevel.LEVEL1:
+                mainSpawnPoint = spawnPoint;
+                break;
+            case GameLevel.LEVEL3:
+                mainSpawnPoint = spawnPointTwo;
+                break;
+            default:
+                mainSpawnPoint = spawnPoint;
+                break;
+        }
+        transform.position = mainSpawnPoint.position;
         myCharacterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         idle = true;
@@ -38,14 +54,16 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-
+        if(gameObject.transform.position.x > spawnPointTwo.position.x)
+        {
+            GameManager.Instance.gameLevel = GameLevel.LEVEL3;
+        }
         if (!isDead && !isWin)
         {
             if (walkMovement == 0 && !idle && !GameManager.Instance.gamePaused)
             {
                 animator.SetBool("isRunning", false);
                 idle = true;
-                transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
             }
 
             playerVelocity.y += gravityValue * Time.deltaTime;
@@ -92,17 +110,31 @@ public class Player : MonoBehaviour
         }
             
     }
+
+    public void OnShoot(InputAction.CallbackContext context)
+    {
+        if(!idle && groundedPlayer)
+        {
+            Debug.Log("Shoot");
+        }
+    }
+
+
     public void PauseGame()
     {
         if (!GameManager.Instance.gamePaused)
         {
             GameManager.Instance.gamePaused = true;
             resumeText.gameObject.SetActive(true);
+            saveButton.gameObject.SetActive(true);
+            exitButton.gameObject.SetActive(true);
         }
         else if (GameManager.Instance.gamePaused)
         {
             GameManager.Instance.gamePaused = false;
             resumeText.gameObject.SetActive(false);
+            saveButton.gameObject.SetActive(false);
+            exitButton.gameObject.SetActive(false);
         }
 
     }
@@ -127,8 +159,8 @@ public class Player : MonoBehaviour
 
         if (other.gameObject.tag == "DeathPlane")
         {
-            transform.position = spawnPoint.position;
-            playerLife--;
+            transform.position = mainSpawnPoint.position;
+            GameManager.Instance.playerHealth--;
         }
     }
 

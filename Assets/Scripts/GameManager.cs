@@ -4,6 +4,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
+public enum GameLevel
+{
+    LEVEL1,
+    LEVEL2,
+    LEVEL3
+}
 public class GameManager : MonoBehaviour
 {
     #region singleton
@@ -36,22 +42,16 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-    public bool gamePlay;
     public bool gamePaused;
-
+    public GameLevel gameLevel;
+    public int playerHealth;
     // Start is called before the first frame update
     void Start()
     {
-        gamePlay = false;
+        playerHealth = 5;
         gamePaused = false;
     }
 
-
-    public void gameSetup()
-    {
-        gamePlay = true;
-        gamePaused = false;
-    }
     // Update is called once per frame
     void Update()
     {
@@ -74,4 +74,5 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         SceneManager.LoadScene(SceneName);
     }
+
 }
