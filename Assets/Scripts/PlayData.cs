@@ -6,11 +6,12 @@ using UnityEngine;
 public class PlayData
 {
     public GameLevel gameLevel;
-    public int health;
+    public int health, bulletCount;
 
     public PlayData(GameManager gameManager)
     {
         gameLevel = gameManager.gameLevel;
         health = gameManager.playerHealth;
+        bulletCount = gameManager.bulletCount;
     }
 }

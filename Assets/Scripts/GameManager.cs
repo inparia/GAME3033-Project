@@ -44,11 +44,12 @@ public class GameManager : MonoBehaviour
 
     public bool gamePaused;
     public GameLevel gameLevel;
-    public int playerHealth;
+    public int playerHealth, bulletCount;
     // Start is called before the first frame update
     void Start()
     {
         playerHealth = 5;
+        bulletCount = 10;
         gamePaused = false;
     }
 

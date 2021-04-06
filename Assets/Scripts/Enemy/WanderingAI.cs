@@ -13,52 +13,68 @@ public class WanderingAI : MonoBehaviour
     private float timer;
     private Animator animator;
     public NavMeshPath navMeshPath;
+    public int enemyHealth;
+    public bool isDead, isStunned;
     // Use this for initialization
     void OnEnable () {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent> ();
         timer = wanderTimer;
         navMeshPath = new NavMeshPath();
+        enemyHealth = 5;
+        isDead = false;
     }
  
     // Update is called once per frame
     void Update () {
 
-        var player = GameObject.FindGameObjectWithTag("Player");
-
-        if (Mathf.Abs(player.transform.position.x - agent.transform.position.x) < 10)
+        if (!isDead)
         {
-            agent.destination = player.transform.position;
-        }
-        else
-        {
-            timer += Time.deltaTime;
+            var player = GameObject.FindGameObjectWithTag("Player");
 
-            if (timer >= wanderTimer)
+            if (Mathf.Abs(player.transform.position.x - agent.transform.position.x) < 10)
             {
-                
-                Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
-                if (newPos.x > transform.position.x)
+                agent.destination = player.transform.position;
+            }
+            else
+            {
+                timer += Time.deltaTime;
+
+                if (timer >= wanderTimer)
                 {
-                    transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
+
+                    Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
+                    if (newPos.x > transform.position.x)
+                    {
+                        transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
+                    }
+                    else if (newPos.x < transform.position.x)
+                    {
+                        transform.rotation = Quaternion.Euler(new Vector3(0, -90, 0));
+                    }
+
+                    agent.SetDestination(new Vector3(newPos.x, newPos.y, 0));
+                    timer = 0;
                 }
-                else if (newPos.x < transform.position.x)
-                {
-                    transform.rotation = Quaternion.Euler(new Vector3(0, -90, 0));
-                }
-                
-                agent.SetDestination(new Vector3 (newPos.x, newPos.y, 0));
-                timer = 0;
+            }
+            if (agent.velocity != Vector3.zero)
+            {
+                animator.SetBool("isWalking", true);
+            }
+            else
+            {
+                animator.SetBool("isWalking", false);
             }
         }
-        if(agent.velocity != Vector3.zero)
+
+        if(enemyHealth <= 0)
         {
-            animator.SetBool("isWalking", true);
+            agent.isStopped = true;
+            isDead = true;
+            animator.SetBool("isDead", true);
+            Destroy(gameObject, 4);
         }
-        else
-        {
-            animator.SetBool("isWalking", false);
-        }
+
     }
 
     public Vector3 RandomNavSphere(Vector3 origin, int dist, int layermask) {
@@ -83,6 +99,4 @@ public class WanderingAI : MonoBehaviour
         }
 
     }
-
- 
 }

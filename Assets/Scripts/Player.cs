@@ -9,17 +9,18 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
 
-    private bool idle, isDead, isWin;
+    private bool idle, isDead, isWin, isShoot;
     private CharacterController myCharacterController;
     private Animator animator;
-
+    public GameObject bullet;
+    public Transform bulletSpawnPoint;
     [Header("Player Movement Stats")]
     private float walkMovement;
     public int playerLife;
     public float speed = 100;
     private bool groundedPlayer;
     private float jumpHeight = .35f;
-    private float gravityValue = -9.81f;
+    private float gravityValue = -9.81f, facingDirection;
     private Vector3 playerVelocity;
 
     [Header("Text")]
@@ -49,6 +50,8 @@ public class Player : MonoBehaviour
         idle = true;
         isDead = false;
         isWin = false;
+        isShoot = false;
+        facingDirection = 90;
     }
 
     // Update is called once per frame
@@ -58,12 +61,13 @@ public class Player : MonoBehaviour
         {
             GameManager.Instance.gameLevel = GameLevel.LEVEL3;
         }
-        if (!isDead && !isWin)
+        if (!isDead && !isWin && !isShoot)
         {
             if (walkMovement == 0 && !idle && !GameManager.Instance.gamePaused)
             {
                 animator.SetBool("isRunning", false);
                 idle = true;
+                transform.rotation = Quaternion.Euler(new Vector3(0, facingDirection, 0));
             }
 
             playerVelocity.y += gravityValue * Time.deltaTime;
@@ -84,7 +88,12 @@ public class Player : MonoBehaviour
 
     public void OnWalk(InputAction.CallbackContext context)
     {
-        if (!isDead && !isWin)
+        if(isShoot)
+        {
+            walkMovement = 0;
+        }
+
+        if (!isDead && !isWin && !isShoot)
         {
             walkMovement = context.ReadValue<float>();
             animator.SetBool("isRunning", true);
@@ -93,12 +102,13 @@ public class Player : MonoBehaviour
             {
                 if (walkMovement < 0)
                 {
-                    transform.rotation = Quaternion.Euler(new Vector3(0, -90, 0));
+                    facingDirection = -90;
                 }
-                else
+                else if(walkMovement > 0)
                 {
-                    transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
+                    facingDirection = 90;
                 }
+                transform.rotation = Quaternion.Euler(new Vector3(0, facingDirection, 0));
             }
         }
     }
@@ -111,11 +121,12 @@ public class Player : MonoBehaviour
             
     }
 
-    public void OnShoot(InputAction.CallbackContext context)
+    public void OnShoot()
     {
-        if(!idle && groundedPlayer)
+        if(groundedPlayer && !isShoot && !isWin && GameManager.Instance.bulletCount > 0)
         {
-            Debug.Log("Shoot");
+            StartCoroutine(AnimatorSetFire(.3f));
+            StartCoroutine(bulletShoot(0.3f));
         }
     }
 
@@ -142,9 +153,12 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.tag == "Enemy")
         {
-            isDead = true;
-            animator.SetBool("isDead", isDead);
-            GameManager.Instance.delayScene(5, "LoseScene");
+            if (!other.GetComponent<WanderingAI>().isDead)
+            {
+                isDead = true;
+                animator.SetBool("isDead", isDead);
+                GameManager.Instance.delayScene(5, "LoseScene");
+            }
         }
 
         if (other.gameObject.tag == "Goal")
@@ -164,4 +178,28 @@ public class Player : MonoBehaviour
         }
     }
 
+    private IEnumerator AnimatorSetFire(float animationLength)
+    {
+        isShoot = true;
+        animator.SetBool("isShoot", true);
+        yield return new WaitForSeconds(animationLength);
+        isShoot = false;
+        animator.SetBool("isShoot", false);
+    }
+
+    private IEnumerator bulletShoot(float timer)
+    {
+        yield return new WaitForSeconds(timer);
+        var bulletClone = Instantiate(bullet, bulletSpawnPoint.position, bullet.transform.rotation);
+        GameManager.Instance.bulletCount--;
+        switch(facingDirection)
+        {
+            case 90:
+                bulletClone.GetComponent<Bullet>().shootRight = true;
+                break;
+            case -90:
+                bulletClone.GetComponent<Bullet>().shootRight = false;
+                break;
+        }
+    }
 }

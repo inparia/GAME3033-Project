@@ -1507,6 +1507,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af75d7a1c0ff11e40bddbf0360ea84f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bullet: {fileID: 3273518087404534332, guid: 4df0da1e09127914cbe2272a71606688, type: 3}
+  bulletSpawnPoint: {fileID: 6513552914030710992}
   playerLife: 5
   speed: 10
   resumeText: {fileID: 0}
@@ -2047,6 +2049,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 974fad82d4a08404dbfa202033ba74b5, type: 3}
+--- !u!4 &6513552914030710992 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5471023972064331120, guid: 974fad82d4a08404dbfa202033ba74b5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1263315279568983456}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1263315279569375010 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400002, guid: 974fad82d4a08404dbfa202033ba74b5,

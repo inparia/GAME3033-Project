@@ -34,6 +34,7 @@ public class SaveObject : MonoBehaviour
         PlayData data = SaveSystem.LoadData();
         gameManager.gameLevel = data.gameLevel;
         gameManager.playerHealth = data.health;
+        gameManager.bulletCount = data.bulletCount;
         SceneManager.LoadScene("Game");
     }
 
@@ -41,6 +42,7 @@ public class SaveObject : MonoBehaviour
     {
         gameManager.gameLevel = GameLevel.LEVEL1;
         gameManager.playerHealth = 5;
+        gameManager.bulletCount = 10;
         SceneManager.LoadScene("Game");
     }
 }

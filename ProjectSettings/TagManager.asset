@@ -10,6 +10,7 @@ TagManager:
   - Enemy
   - Goal
   - DeathPlane
+  - Bullet
   layers:
   - Default
   - TransparentFX
