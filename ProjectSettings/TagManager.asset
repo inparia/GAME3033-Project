@@ -11,6 +11,7 @@ TagManager:
   - Goal
   - DeathPlane
   - Bullet
+  - BulletCase
   layers:
   - Default
   - TransparentFX

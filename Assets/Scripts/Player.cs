@@ -176,6 +176,7 @@ public class Player : MonoBehaviour
             transform.position = mainSpawnPoint.position;
             GameManager.Instance.playerHealth--;
         }
+
     }
 
     private IEnumerator AnimatorSetFire(float animationLength)
