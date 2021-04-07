@@ -84,6 +84,14 @@ public class Player : MonoBehaviour
             else
                 animator.SetBool("isJumping", false);
         }
+
+        if(GameManager.Instance.playerHealth <= 0)
+        {
+            isDead = true;
+            animator.SetBool("isDead", isDead);
+            GameManager.Instance.delayScene(5, "LoseScene");
+            GameManager.Instance.playerHealth = 5;
+        }
     }
 
     public void OnWalk(InputAction.CallbackContext context)
@@ -130,7 +138,10 @@ public class Player : MonoBehaviour
         }
     }
 
-
+    public bool getDead()
+    {
+        return isDead;
+    }
     public void PauseGame()
     {
         if (!GameManager.Instance.gamePaused)
