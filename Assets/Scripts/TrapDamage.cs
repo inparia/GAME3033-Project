@@ -38,6 +38,7 @@ public class TrapDamage : MonoBehaviour
         {
             if (!damageGiven && isOn && !other.gameObject.GetComponent<Player>().getDead())
             {
+                other.gameObject.GetComponent<Player>().playHurtSound();
                 damageGiven = true;
                 GameManager.Instance.playerHealth--;
             }

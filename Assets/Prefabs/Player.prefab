@@ -1643,7 +1643,7 @@ MonoBehaviour:
   speed: 10
   gunShoot: {fileID: 8882888098108746048}
   itemHit: {fileID: 3548967026987682760}
-  playDead: {fileID: 1685701851724996406}
+  damageTaken: {fileID: 1685701851724996406}
   resumeText: {fileID: 0}
   saveButton: {fileID: 0}
   exitButton: {fileID: 0}

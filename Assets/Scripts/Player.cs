@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-
+    
     private bool idle, isDead, isWin, isShoot;
     private CharacterController myCharacterController;
     private Animator animator;
@@ -22,9 +22,9 @@ public class Player : MonoBehaviour
     private float jumpHeight = .4f;
     private float gravityValue = -9.81f, facingDirection;
     private Vector3 playerVelocity;
-    public AudioSource gunShoot, itemHit, playDead;
+    public AudioSource gunShoot, itemHit, damageTaken;
     [Header("Text")]
-    public Text resumeText;
+    public TMPro.TextMeshProUGUI tMPro;
     public Button saveButton, exitButton;
     [Header("Spawn Point")]
     public Transform spawnPoint, spawnPointTwo, spawnPointThree;
@@ -84,7 +84,6 @@ public class Player : MonoBehaviour
         if(GameManager.Instance.playerHealth <= 0)
         {
             isDead = true;
-            playDead.Play();
             animator.SetBool("isDead", isDead);
             GameManager.Instance.delayScene(5, "LoseScene");
             GameManager.Instance.playerHealth = 5;
@@ -144,14 +143,14 @@ public class Player : MonoBehaviour
         if (!GameManager.Instance.gamePaused)
         {
             GameManager.Instance.gamePaused = true;
-            resumeText.gameObject.SetActive(true);
+            tMPro.gameObject.SetActive(true);
             saveButton.gameObject.SetActive(true);
             exitButton.gameObject.SetActive(true);
         }
         else if (GameManager.Instance.gamePaused)
         {
             GameManager.Instance.gamePaused = false;
-            resumeText.gameObject.SetActive(false);
+            tMPro.gameObject.SetActive(false);
             saveButton.gameObject.SetActive(false);
             exitButton.gameObject.SetActive(false);
         }
@@ -163,7 +162,7 @@ public class Player : MonoBehaviour
         {
             if (!other.GetComponent<WanderingAI>().isDead)
             {
-                playDead.Play();
+                damageTaken.Play();
                 isDead = true;
                 animator.SetBool("isDead", isDead);
                 GameManager.Instance.delayScene(5, "LoseScene");
@@ -226,7 +225,10 @@ public class Player : MonoBehaviour
                 break;
         }
     }
-
+    public void playHurtSound()
+    {
+        damageTaken.Play();
+    }
     public void playItemSound()
     {
         itemHit.Play();
