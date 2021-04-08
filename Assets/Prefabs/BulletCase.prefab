@@ -91,11 +91,22 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5252339223408349296, guid: c350023b68bece943928351ad0df5c3a,
+        type: 3}
+      propertyPath: itemHit
+      value: 
+      objectReference: {fileID: 277127179209857235}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c350023b68bece943928351ad0df5c3a, type: 3}
 --- !u!4 &5271313109210648685 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4333507836982010, guid: c350023b68bece943928351ad0df5c3a,
+    type: 3}
+  m_PrefabInstance: {fileID: 5271483247205638807}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &277127179209857235 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5399991492682299972, guid: c350023b68bece943928351ad0df5c3a,
     type: 3}
   m_PrefabInstance: {fileID: 5271483247205638807}
   m_PrefabAsset: {fileID: 0}

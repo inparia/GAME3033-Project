@@ -10,7 +10,7 @@ public class StageScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        timeRemaining = 3;
+        timeRemaining = 3.0f;
         tMPro = GetComponent<TMPro.TextMeshProUGUI>();
         
         switch(GameManager.Instance.gameLevel)
@@ -37,6 +37,7 @@ public class StageScript : MonoBehaviour
         else
         {
             gameObject.SetActive(false);
+            timeRemaining = 3.0f;
         }
         
     }

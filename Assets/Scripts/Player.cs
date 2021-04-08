@@ -19,15 +19,15 @@ public class Player : MonoBehaviour
     public int playerLife;
     public float speed = 100;
     private bool groundedPlayer;
-    private float jumpHeight = .35f;
+    private float jumpHeight = .4f;
     private float gravityValue = -9.81f, facingDirection;
     private Vector3 playerVelocity;
-
+    public AudioSource gunShoot, itemHit;
     [Header("Text")]
     public Text resumeText;
     public Button saveButton, exitButton;
     [Header("Spawn Point")]
-    public Transform spawnPoint, spawnPointTwo;
+    public Transform spawnPoint, spawnPointTwo, spawnPointThree;
     public Transform mainSpawnPoint;
     // Start is called before the first frame update
     void Start()
@@ -37,11 +37,11 @@ public class Player : MonoBehaviour
             case GameLevel.LEVEL1:
                 mainSpawnPoint = spawnPoint;
                 break;
-            case GameLevel.LEVEL3:
+            case GameLevel.LEVEL2:
                 mainSpawnPoint = spawnPointTwo;
                 break;
-            default:
-                mainSpawnPoint = spawnPoint;
+            case GameLevel.LEVEL3:
+                mainSpawnPoint = spawnPointThree;
                 break;
         }
         transform.position = mainSpawnPoint.position;
@@ -57,10 +57,6 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(gameObject.transform.position.x > spawnPointTwo.position.x)
-        {
-            GameManager.Instance.gameLevel = GameLevel.LEVEL3;
-        }
         if (!isDead && !isWin && !isShoot)
         {
             if (walkMovement == 0 && !idle && !GameManager.Instance.gamePaused)
@@ -174,11 +170,24 @@ public class Player : MonoBehaviour
 
         if (other.gameObject.tag == "Goal")
         {
-            
+
+            GameManager.Instance.gameLevel = GameLevel.LEVEL2;
+            transform.position = spawnPointTwo.position;
+        }
+
+        if (other.gameObject.tag == "GoalTwo")
+        {
+
+            GameManager.Instance.gameLevel = GameLevel.LEVEL3;
+            transform.position = spawnPointThree.position;
+        }
+
+        if (other.gameObject.tag == "GoalThree")
+        {
+
             isWin = true;
             idle = true;
             animator.SetBool("isRunning", false);
-           
             GameManager.Instance.delayScene(5, "WinScene");
         }
 
@@ -194,6 +203,7 @@ public class Player : MonoBehaviour
     {
         isShoot = true;
         animator.SetBool("isShoot", true);
+        gunShoot.Play();
         yield return new WaitForSeconds(animationLength);
         isShoot = false;
         animator.SetBool("isShoot", false);
@@ -213,5 +223,10 @@ public class Player : MonoBehaviour
                 bulletClone.GetComponent<Bullet>().shootRight = false;
                 break;
         }
+    }
+
+    public void playItemSound()
+    {
+        itemHit.Play();
     }
 }

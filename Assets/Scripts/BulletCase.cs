@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BulletCase : MonoBehaviour
 {
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +22,7 @@ public class BulletCase : MonoBehaviour
 
         if (other.gameObject.tag == "Player")
         {
+            other.gameObject.GetComponent<Player>().playItemSound();
             Destroy(gameObject);
             GameManager.Instance.bulletCount += 5;
         }

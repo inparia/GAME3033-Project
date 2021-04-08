@@ -15,6 +15,7 @@ public class WanderingAI : MonoBehaviour
     public NavMeshPath navMeshPath;
     public int enemyHealth;
     public bool isDead, isStunned;
+    public AudioSource zombieDead;
     // Use this for initialization
     void OnEnable () {
         animator = GetComponent<Animator>();
@@ -67,12 +68,14 @@ public class WanderingAI : MonoBehaviour
             }
         }
 
-        if(enemyHealth <= 0)
+        if(enemyHealth == 0)
         {
+            zombieDead.Play();
             agent.isStopped = true;
             isDead = true;
             animator.SetBool("isDead", true);
             Destroy(gameObject, 4);
+            enemyHealth = -1;
         }
 
     }

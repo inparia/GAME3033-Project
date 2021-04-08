@@ -6,6 +6,7 @@ public class FireTrap : MonoBehaviour
 {
     public bool isOn;
     private ParticleSystem particleSystem;
+    public float fireTimer;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,11 +19,11 @@ public class FireTrap : MonoBehaviour
     {
         if (isOn)
         {
-            StartCoroutine(turnOff(5.0f));
+            StartCoroutine(turnOff(fireTimer));
         }
         else
         {
-            StartCoroutine(turnOn(5.0f));
+            StartCoroutine(turnOn(fireTimer));
         }
     }
 
