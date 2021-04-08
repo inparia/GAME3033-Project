@@ -21,12 +21,14 @@ public class SaveObject : MonoBehaviour
     {
         SceneManager.LoadScene("MainScene");
         GameManager.Instance.gamePaused = false;
+        GameObject.FindGameObjectWithTag("Music").GetComponent<MusicClass>().PlayMusic();
     }
     public void SaveGame()
     {
         SaveSystem.SaveGameLevel(gameManager);
         SceneManager.LoadScene("MainScene");
         GameManager.Instance.gamePaused = false;
+        GameObject.FindGameObjectWithTag("Music").GetComponent<MusicClass>().PlayMusic();
     }
 
     public void LoadGame()
@@ -36,6 +38,7 @@ public class SaveObject : MonoBehaviour
         gameManager.playerHealth = data.health;
         gameManager.bulletCount = data.bulletCount;
         SceneManager.LoadScene("Game");
+        GameObject.FindGameObjectWithTag("Music").GetComponent<MusicClass>().StopMusic();
     }
 
     public void NewGame()
@@ -44,5 +47,6 @@ public class SaveObject : MonoBehaviour
         gameManager.playerHealth = 5;
         gameManager.bulletCount = 10;
         SceneManager.LoadScene("Game");
+        GameObject.FindGameObjectWithTag("Music").GetComponent<MusicClass>().StopMusic();
     }
 }

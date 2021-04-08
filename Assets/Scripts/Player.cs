@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     private float jumpHeight = .4f;
     private float gravityValue = -9.81f, facingDirection;
     private Vector3 playerVelocity;
-    public AudioSource gunShoot, itemHit;
+    public AudioSource gunShoot, itemHit, playDead;
     [Header("Text")]
     public Text resumeText;
     public Button saveButton, exitButton;
@@ -84,6 +84,7 @@ public class Player : MonoBehaviour
         if(GameManager.Instance.playerHealth <= 0)
         {
             isDead = true;
+            playDead.Play();
             animator.SetBool("isDead", isDead);
             GameManager.Instance.delayScene(5, "LoseScene");
             GameManager.Instance.playerHealth = 5;
@@ -158,10 +159,11 @@ public class Player : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Enemy" && !isDead && !isWin)
         {
             if (!other.GetComponent<WanderingAI>().isDead)
             {
+                playDead.Play();
                 isDead = true;
                 animator.SetBool("isDead", isDead);
                 GameManager.Instance.delayScene(5, "LoseScene");

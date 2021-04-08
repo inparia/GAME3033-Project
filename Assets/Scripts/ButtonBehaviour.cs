@@ -21,10 +21,6 @@ public class ButtonBehaviour : MonoBehaviour
         SceneManager.LoadScene("Game");
     }
 
-    public void difficultySelect()
-    {
-        SceneManager.LoadScene("Difficulty");
-    }
     public void instructionMenu()
     {
         SceneManager.LoadScene("Instruction");
